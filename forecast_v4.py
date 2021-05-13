@@ -264,7 +264,6 @@ plt.xlabel('Time[year]')
 plt.ylabel('Probabitlity [%]')
 fig.patch.set_facecolor('#205873')
 ax.set_facecolor('#205873')
-#plt.legend()
 plt.show()
 
 
@@ -289,7 +288,6 @@ fig = go.Figure(go.Indicator(
         }))
  
 fig.update_layout(paper_bgcolor = "#205873", font = {'color': "white", 'family': "Arial"})
- 
 fig.show()
 
 
