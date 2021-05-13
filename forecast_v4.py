@@ -269,43 +269,27 @@ plt.show()
 
 
 
-# =============================================================================
-# =============================================================================
+
+fig = go.Figure(go.Indicator(
+     mode = "gauge+number",
+     value = BSS,
+     domain = {'x': [0, 0.5], 'y': [0, 0.5]},
+     title = {'text': "Performance of the forecast (BBS)", 'font': {'size': 40}},
+     delta = {'reference': 400, 'increasing': {'color': "teal"}},
+     number={"font":{"size":20}},
+     gauge = {
+         'axis': {'range': [None, 1], 'tickwidth': 4, 'tickcolor': "white", 'ticklen': 10, 'tickfont_size' :40},
+         'bar': {'color': "limegreen" , 'thickness' : 0.5},
+         'bgcolor': "white",
+         'borderwidth': 2,
+         'bordercolor': "black",
+         'steps': [
+            {'range': [0, 250], 'color': 'green'},
+            {'range': [250, 400], 'color': 'royalblue'}],
+        }))
  
-# fig = go.Figure(go.Indicator(
-     # mode = "gauge+number",
-     # value = BSS,
-     # domain = {'x': [0, 0.5], 'y': [0, 0.5]},
-     # title = {'text': "Performance of the forecast (BBS)", 'font': {'size': 40}},
-     # delta = {'reference': 400, 'increasing': {'color': "teal"}},
-     # #number={"font":{"size":20}},
-     # gauge = {
-         # 'axis': {'range': [None, 1], 'tickwidth': 4, 'tickcolor': "white", 'ticklen': 10, 'tickfont_size' :40},
-         # 'bar': {'color': "limegreen" , 'thickness' : 0.5},
-         # 'bgcolor': "white",
-         # 'borderwidth': 2,
-         # 'bordercolor': "black",
-         # 'steps': [
-            # {'range': [0, 250], 'color': 'green'},
-            # {'range': [250, 400], 'color': 'royalblue'}],
-        # }))
+fig.update_layout(paper_bgcolor = "#205873", font = {'color': "white", 'family': "Arial"})
  
-# fig.update_layout(paper_bgcolor = "#205873", font = {'color': "white", 'family': "Arial"})
- 
-# fig.show()
-# =============================================================================
-#=============================================================================
+fig.show()
 
 
-
-# =============================================================================
-# plt.scatter(new_mu_vec, SSIE_ok)
-# plt.xlabel('Forecast')
-# plt.ylabel('Observation')
-# slope3, intercept3, r3, p3, se3 = scipy.stats.linregress(new_mu_vec[:i], SSIE_ok[:i])
-# trend3 = intercept3 + slope3 * np.arange(4.5e6,8.5e6)
-# plt.plot(np.arange(4.5e6,8.5e6), trend3, label = 'trend des points')
-# plt.plot(np.arange(4.5e6,8.5e6),np.arange(4.5e6,8.5e6),label = 'x=y')
-# plt.legend()
-# plt.show()
-# =============================================================================
