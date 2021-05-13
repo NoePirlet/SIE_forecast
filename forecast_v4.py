@@ -231,13 +231,17 @@ print(BSS)
 # Graphics-------------------------------------------------------------------------------------------------
 
 fig, ax= plt.subplots()
-ax.fill_between(year, (std_dev_p), (std_dev_n), color='b', alpha=.1)
-plt.plot(year, SSIE_shift, label ='Observation')
-#plt.plot(x, trend1)
-#plt.plot(x, trend2)
-plt.plot(year, new_mu_vec, label = 'Forecast')
+ax.fill_between(year, (std_dev_p), (std_dev_n), color='white', alpha=.1)
+plt.plot(year, SSIE_shift, color = 'red', label ='Observation')
+plt.plot(year, new_mu_vec, color ='azure' , label = 'Forecast')
+plt.xlabel('Time[year]')
+plt.ylabel('Sea ice extent [km2]')
+plt.title('September sea ice extent')
 plt.legend()
+fig.patch.set_facecolor('#205873')
+ax.set_facecolor('#205873')
 plt.show()
+
 
 
 fig, ax = plt.subplots()
@@ -248,18 +252,17 @@ for i in np.arange(40):
     else:
         col.append("limegreen")
 plt.bar(np.arange(1981, 2021), Prob, color =col, label = 'Probability of our model')
-#plt.plot(np.arange(1981, 2021), o, '--', linewidth=1, color='red', label = 'Event occur or not' )
-#plt.plot(np.arange(1981, 2021), Prob, color ='white', label = 'Probability of our model')
 colors = {'Event':'limegreen', 'Non-event':'darkred'}        
 labels = list(colors.keys())
 handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
 plt.legend(handles, labels)
 plt.xlabel('Time[year]')
 plt.ylabel('Probabitlity [%]')
+plt.title('Probability of event occurring')
 fig.patch.set_facecolor('#205873')
 ax.set_facecolor('#205873')
-#plt.legend()
 plt.show()
+
 
 
 fig = go.Figure(go.Indicator(
