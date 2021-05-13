@@ -9,6 +9,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import norm
 import scipy.stats
+
+
 #import plotly.graph_objects as go
 # Open file------------------------------------------------------------------------------------------------
 f = open("extent_data.txt", "r")
