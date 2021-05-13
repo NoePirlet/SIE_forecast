@@ -51,7 +51,7 @@ for x in contents:
 # The Gaussian---------------------------------------------------------------------------------------------
 def get_gaussian(N_yr):
 
-    N_m = N_yr*12  # Nombre de mois avec le nombre d'année sélectionné
+    N_m = N_yr*12  # Number of months with the number of years selected
 
     SIE_uncertainty = 900000  # [km^2] Integrated Ice-Edge Error
 
@@ -93,7 +93,7 @@ def get_gaussian(N_yr):
         SIE_dec = np.zeros(N_yr-1)
 
     for i in np.arange(N_m):
-        moy = (np.arange(0, N_m)) % 12+1  # mois 1-12 pour chaque année
+        moy = (np.arange(0, N_m)) % 12+1
         if moy[i] == 9 and SIE[i] > 0:
             SIE_sept[j] = SIE[i]
             j = j+1
@@ -135,7 +135,7 @@ def get_gaussian(N_yr):
         #pas de données pour avril et mai  1986 qui interviennent dans le calcul de sept 1986  (no data for june)
         SIE_mean = (SIE[N_m+2] + SIE[N_m+1] + SIE[N_m+0] + SIE[N_m-1] + SIE[N_m-2] + SIE[N_m-3])/6
     elif N_yr == 9:
-        #pas de données pour dec 1987 qui intervient dans le calcul de sept 1988
+        #pas de données pour dec 1987 qui intervient dans le calcul de sept 1988 
         SIE_mean = (SIE[N_m+4] + SIE[N_m+3] + SIE[N_m+2] + SIE[N_m+1] + SIE[N_m+0] + SIE[N_m-2] + SIE[N_m-3])/7
     else:
         SIE_mean = (SIE[N_m+4] + SIE[N_m+3] + SIE[N_m+2] + SIE[N_m+1] + SIE[N_m+0] + SIE[N_m-1] + SIE[N_m-2] + SIE[N_m-3])/8  
@@ -152,10 +152,10 @@ def get_gaussian(N_yr):
 
 # Setup----------------------------------------------------------------------------------------------------
 year = np.arange(1981, 2021)  # 2020
-n = 42 #nombre d'année qu'on veut prendre en compte (41 pour 2019, 42 pour 2020, 43 pour 2021)
+n = 42 
 
 # Another def to Sept_Sea_Ice_extent-----------------------------------------------------------------------
-SSIE = np.zeros(n)  # de 1979 à 2020  ######plus de 1981
+SSIE = np.zeros(n)  
 for i in range(0, n):
     SSIE[i] = SIE[12*i + 9-1]
 
