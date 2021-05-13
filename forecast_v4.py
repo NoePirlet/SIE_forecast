@@ -9,13 +9,13 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import norm
 import scipy.stats
-#import plotly.graph_objects as go
+import plotly.graph_objects as go
 # Open file------------------------------------------------------------------------------------------------
 f = open("extent_data.txt", "r")
 contents = f.readlines()
 
 
-# Description du fichier data------------------------------------------------------------------------------
+# Description of the data file------------------------------------------------------------------------------
 # FracYear YYYY MM DD SIE[km^2]
 # Area: Northern Hemisphere
 # Quantity: Sea Ice Extent
@@ -48,9 +48,7 @@ for x in contents:
         SIE[K] = float(strArray[4])
         K = K + 1
 
-#The Gaussian----------------------------------------------------------------------------------------------
-
-
+# The Gaussian---------------------------------------------------------------------------------------------
 def get_gaussian(N_yr):
 
     N_m = N_yr*12  # Nombre de mois avec le nombre d'année sélectionné
@@ -152,7 +150,7 @@ def get_gaussian(N_yr):
     return(Gaussian, mu, sigma, SIE_sept, SIE_may)
 
 
-#Setup-----------------------------------------------------------------------------------------------------
+# Setup----------------------------------------------------------------------------------------------------
 year = np.arange(1981, 2021)  # 2020
 n = 42 #nombre d'année qu'on veut prendre en compte (41 pour 2019, 42 pour 2020, 43 pour 2021)
 
@@ -161,7 +159,7 @@ SSIE = np.zeros(n)  # de 1979 à 2020  ######plus de 1981
 for i in range(0, n):
     SSIE[i] = SIE[12*i + 9-1]
 
-# mu_vec---------------------------------------------------------------------------------------------------
+# Mean vector---------------------------------------------------------------------------------------------------
 mu_vec = np.zeros(n-2)
 for i in np.arange(2, n):  # 1981 a 2020
     mu_vec[i-2] = get_gaussian(i)[1]
@@ -182,7 +180,7 @@ trend2 = intercept2 + slope2 * year
 trend_diff = trend1-trend2
 new_mu_vec = mu_vec + trend_diff
 
-#standart deviation----------------------------------------------------------------------------------------
+# Standart deviation---------------------------------------------------------------------------------------
 std_dev_p = np.zeros(n-2)
 std_dev_n = np.zeros(n-2)
 j = 0
@@ -193,7 +191,7 @@ for i in np.arange(2, n):  # 1981 a 2020
             
         
 
-# Proba----------------------------------------------------------------------------------------------------
+# Probability----------------------------------------------------------------------------------------------
 
 Prob= np.zeros(n-2)
 for i in np.arange(2, n):
@@ -230,10 +228,7 @@ print(BS_ref)
 print(BSS)
 
 
-# graphics-------------------------------------------------------------------------------------------------
-
-# plt.hist(get_gaussian(21)[0],100)
-
+# Graphics-------------------------------------------------------------------------------------------------
 
 fig, ax= plt.subplots()
 ax.fill_between(year, (std_dev_p), (std_dev_n), color='b', alpha=.1)
@@ -243,7 +238,6 @@ plt.plot(year, SSIE_shift, label ='Observation')
 plt.plot(year, new_mu_vec, label = 'Forecast')
 plt.legend()
 plt.show()
-
 
 
 fig, ax = plt.subplots()
@@ -264,9 +258,8 @@ plt.xlabel('Time[year]')
 plt.ylabel('Probabitlity [%]')
 fig.patch.set_facecolor('#205873')
 ax.set_facecolor('#205873')
+#plt.legend()
 plt.show()
-
-
 
 
 fig = go.Figure(go.Indicator(
@@ -288,6 +281,7 @@ fig = go.Figure(go.Indicator(
         }))
  
 fig.update_layout(paper_bgcolor = "#205873", font = {'color': "white", 'family': "Arial"})
+ 
 fig.show()
 
 
