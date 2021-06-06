@@ -22,7 +22,7 @@ contents = f.readlines()
 # Product: EUMETSAT OSI SAF Sea Ice Index v2p1 (demonstration)
 # References: Product User Manual for OSI-420, Lavergne et al., v1.0, November 2020
 # Source: EUMETSAT OSI SAF v2 data, with R&D input from ESA CCI (Lavergne et al., 2019)
-# Creation date: 2021-03-30 10:02:15.039862
+# Creation date: 2021-06-03 10:06:21.440310
 
 # Count lines----------------------------------------------------------------------------------------------
 K = 0
@@ -66,13 +66,6 @@ def get_gaussian(N_yr):
     b = 0
     g = 0
 
-    h = 0
-    q = 0
-    s = 0
-    SIE_aug = np.zeros(N_yr)
-    SIE_jui = np.zeros(N_yr)
-    SIE_jjl = np.zeros(N_yr)
-
     SIE_sept = np.zeros(N_yr)
     SIE_may = np.zeros(N_yr)
     SIE_oct = np.zeros(N_yr)
@@ -87,55 +80,56 @@ def get_gaussian(N_yr):
         SIE_may = np.zeros(N_yr-1)
     if N_yr >= 8:
         SIE_avr = np.zeros(N_yr-1)
-    if N_yr >= 8:
-        SIE_jui = np.zeros(N_yr-1)
     if N_yr >= 9:
         SIE_dec = np.zeros(N_yr-1)
+    if  N_yr == 42:                    #The last year does not take into account all the months of the year
+        SIE_may = np.zeros(N_yr)
+        SIE_avr = np.zeros(N_yr)
+        SIE_mar = np.zeros(N_yr+1)
+        SIE_fev = np.zeros(N_yr+1)
+        SIE_jan = np.zeros(N_yr+1)    
+        
 
     for i in np.arange(N_m):
-        moy = (np.arange(0, N_m)) % 12+1
-        if moy[i] == 9 and SIE[i] > 0:
+        if Month[i] == 9 and SIE[i] > 0:
             SIE_sept[j] = SIE[i]
             j = j+1
-        if moy[i] == 10 and SIE[i] > 0:
+        if Month[i] == 10 and SIE[i] > 0:
             SIE_oct[l] = SIE[i]
             l = l+1
-        if moy[i] == 11 and SIE[i] > 0:
+        if Month[i] == 11 and SIE[i] > 0:
             SIE_nov[w] = SIE[i]
             w = w+1
-        if moy[i] == 12 and SIE[i] > 0:
+        if Month[i] == 12 and SIE[i] > 0:
             SIE_dec[c] = SIE[i]
-            c = c+1
-        if moy[i] == 1 and SIE[i] > 0:
+            c = c+1   
+        if Month[i] == 1 and SIE[i] > 0:
             SIE_jan[v] = SIE[i]
             v = v+1
-        if moy[i] == 2 and SIE[i] > 0:
+        if Month[i] == 2 and SIE[i] > 0:
             SIE_fev[b] = SIE[i]
             b = b+1
-        if moy[i] == 3 and SIE[i] > 0:
+        if Month[i] == 3 and SIE[i] > 0:
             SIE_mar[g] = SIE[i]
             g = g+1
-        if moy[i] == 4 and SIE[i] > 0:
+        if Month[i] == 4 and SIE[i] > 0:
             SIE_avr[k] = SIE[i]
             k = k+1
-        if moy[i] == 5 and SIE[i] > 0:
+        if Month[i] == 5 and SIE[i] > 0:
             SIE_may[m] = SIE[i]
             m = m+1
-        if moy[i] == 6 and SIE[i] > 0:
-            SIE_jui[h] = SIE[i]
-            h = h+1
-        if moy[i] == 7 and SIE[i] > 0:
-            SIE_jjl[q] = SIE[i]
-            q = q+1
-        if moy[i] == 8 and SIE[i] > 0:
-            SIE_aug[s] = SIE[i]
-            s = s+1
+        if  N_yr == 42:   
+            SIE_may[-1] = SIE[-1]
+            SIE_avr[-1] = SIE[-2]
+            SIE_mar[-1] = SIE[-3]
+            SIE_fev[-1] = SIE[-4]
+            SIE_jan[-1] = SIE[-5]
 
     if N_yr == 7:
-        #pas de données pour avril et mai  1986 qui interviennent dans le calcul de sept 1986  (no data for june)
+        #no data for April and May 1986 (for sept 1986) 
         SIE_mean = (SIE[N_m+2] + SIE[N_m+1] + SIE[N_m+0] + SIE[N_m-1] + SIE[N_m-2] + SIE[N_m-3])/6
     elif N_yr == 9:
-        #pas de données pour dec 1987 qui intervient dans le calcul de sept 1988 
+        #no data for December 1987 (for sept 1988)
         SIE_mean = (SIE[N_m+4] + SIE[N_m+3] + SIE[N_m+2] + SIE[N_m+1] + SIE[N_m+0] + SIE[N_m-2] + SIE[N_m-3])/7
     else:
         SIE_mean = (SIE[N_m+4] + SIE[N_m+3] + SIE[N_m+2] + SIE[N_m+1] + SIE[N_m+0] + SIE[N_m-1] + SIE[N_m-2] + SIE[N_m-3])/8  
@@ -151,17 +145,22 @@ def get_gaussian(N_yr):
 
 
 # Setup----------------------------------------------------------------------------------------------------
-year = np.arange(1981, 2021)  # 2020
-n = 42 
+year = np.arange(1981, 2022)  #1981-2021
+year_b = np.arange(1981, 2021) #1981-2020
+n = 43  
 
 # Another def to Sept_Sea_Ice_extent-----------------------------------------------------------------------
-SSIE = np.zeros(n)  
-for i in range(0, n):
+SSIE = np.zeros(n-1)  
+for i in range(0, n-1):
     SSIE[i] = SIE[12*i + 9-1]
 
+SSIE_shift = np.zeros(n-2)
+for i in np.arange(n-2):
+    SSIE_shift[i]= SSIE[i+2]    
+    
 # Mean vector---------------------------------------------------------------------------------------------------
 mu_vec = np.zeros(n-2)
-for i in np.arange(2, n):  # 1981 a 2020
+for i in np.arange(2, n):  
     mu_vec[i-2] = get_gaussian(i)[1]
 
 for i in range(1, n-2):   
@@ -169,14 +168,17 @@ for i in range(1, n-2):
             mu_vec[i] = (mu_vec[i-1]+mu_vec[i+1])/2
             print("Pas de valeur d'étendue de glace pour l'année :" + str(1981+i))
 
-# Trend----------------------------------------------------------------------------------------------------
+# Linregress----------------------------------------------------------------------------------------------------
 
-slope1, intercept1, r1, p1, se1 = scipy.stats.linregress(year[:i], SSIE[:i])
-trend1 = intercept1 + slope1 * year
+slope1, intercept1, r1, p1, se1 = scipy.stats.linregress(year_b[:i], SSIE_shift[:i])
 slope2, intercept2, r2, p2, se2 = scipy.stats.linregress(year[:i], mu_vec[:i])
-trend2 = intercept2 + slope2 * year
 
 # Correction Bias of the trend-----------------------------------------------------------------------------
+trend1 = np.zeros(n-2)
+trend2 = np.zeros(n-2)
+for i in np.arange(n-2):
+    trend1[i] = intercept1 + slope1 * year[i]
+    trend2[i] = intercept2 + slope2 * year[i]
 trend_diff = trend1-trend2
 new_mu_vec = mu_vec + trend_diff
 
@@ -187,23 +189,13 @@ j = 0
 for i in np.arange(2, n):  # 1981 a 2020
     std_dev_p[i-2] = new_mu_vec[i-2] + 2*get_gaussian(i)[2]
     std_dev_n[i-2] = new_mu_vec[i-2] - 2*get_gaussian(i)[2]
-
-            
         
 
 # Probability----------------------------------------------------------------------------------------------
-
 Prob= np.zeros(n-2)
 for i in np.arange(2, n):
-    mu= get_gaussian(i)[1]
     sigma= get_gaussian(i)[2]
     Prob[i-2] = norm.cdf((SSIE[i-1] - new_mu_vec[i-2])/sigma)
-
-
-SSIE_shift = np.zeros(n-2)
-for i in np.arange(n-2):
-    SSIE_shift[i]= SSIE[i+2]
-
 
 
 # Verification of retrospective forecast-------------------------------------------------------------------
@@ -232,7 +224,7 @@ print(BSS)
 
 fig, ax= plt.subplots()
 ax.fill_between(year, (std_dev_p), (std_dev_n), color='white', alpha=.1)
-plt.plot(year, SSIE_shift, color = 'red', label ='Observation')
+plt.plot(year_b, SSIE_shift, color = 'red', label ='Observation')
 plt.plot(year, new_mu_vec, color ='azure' , label = 'Forecast')
 plt.xlabel('Time[year]')
 plt.ylabel('Sea ice extent [km2]')
@@ -246,12 +238,13 @@ plt.show()
 
 fig, ax = plt.subplots()
 col = []
-for i in np.arange(40):
+for i in np.arange(n-2):
     if o[i] == 0:
         col.append("darkred")
     else:
         col.append("limegreen")
-plt.bar(np.arange(1981, 2021), Prob, color =col, label = 'Probability of our model')
+col.append("white")
+plt.bar(np.arange(1981, 2022), Prob, color =col, label = 'Probability of our model')
 colors = {'Event':'limegreen', 'Non-event':'darkred'}        
 labels = list(colors.keys())
 handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
@@ -271,7 +264,6 @@ fig = go.Figure(go.Indicator(
      domain = {'x': [0, 0.5], 'y': [0, 0.5]},
      title = {'text': "Performance of the forecast (BBS)", 'font': {'size': 40}},
      delta = {'reference': 400, 'increasing': {'color': "teal"}},
-     number={"font":{"size":20}},
      gauge = {
          'axis': {'range': [None, 1], 'tickwidth': 4, 'tickcolor': "white", 'ticklen': 10, 'tickfont_size' :40},
          'bar': {'color': "limegreen" , 'thickness' : 0.5},
